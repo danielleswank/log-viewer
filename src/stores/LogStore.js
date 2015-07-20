@@ -15,14 +15,17 @@ function loadLogs(logs) {
     log = logs[i];
     _logs[log.id] = log;
   }
-
-  localStorage.setItem('logs', JSON.stringify(_logs));
+  // localStorage.setItem('logs', JSON.stringify(_logs));
 }
 
 var LogStore = assign({}, EventEmitter.prototype, {
 
-  getLogs: function() {
+  getAll: function() {
     return _logs;
+  },
+
+  get: function(id) {
+    return _logs[id];
   },
 
   emitChange: function() {
@@ -44,11 +47,10 @@ LogStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case 'EDIT_LOG':
-      editLog(data.id, data.foo);
+      editLog(data.id, data.log);
       break;
 
     case 'LOAD_LOGS':
-      console.log('LogActions:loadLogs', data.logs);
       loadLogs(data.logs);
       break;
   }
